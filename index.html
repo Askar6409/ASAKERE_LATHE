@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asakereh Invoice</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+<!-- کتابخانه‌ها برای PDF و عکس -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="app">
+  <h2>🧾 تراشکاری عساکره</h2>
+
+  <button onclick="toggleLang()">🌐 FA / EN</button>
+
+  <div class="row">
+    <input id="customer" placeholder="نام مشتری">
+    <input id="date" readonly>
+  </div>
+
+  <h3>خدمات</h3>
+  <div id="products"></div>
+  <button onclick="addProduct()">➕ افزودن خدمت</button>
+
+  <h3 id="total">مجموع: 0 تومان</h3>
+
+  <button class="invoice-btn" onclick="generateInvoice()">📄 صدور فاکتور</button>
+  <button onclick="exportImage()">🖼 خروجی عکس</button>
+  <button onclick="exportPDF()">📄 خروجی PDF</button>
+  <button onclick="sendWhatsApp()">📤 WhatsApp</button>
+  <button onclick="sendSMS()">📩 SMS</button>
+
+  <pre id="invoice"></pre>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

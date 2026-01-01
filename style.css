@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'Vazir';
+  src: url('fonts/Vazir.woff2') format('woff2'),
+       url('fonts/Vazir.woff') format('woff');
+}
+
+body {
+  font-family: 'Vazir', sans-serif;
+  background: #0a0a0a;
+  color: #eee;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  max-width: 480px;
+  margin: auto;
+  padding: 20px;
+}
+
+input {
+  width: 48%;
+  padding: 8px;
+  background: #1e1e1e;
+  color: white;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  background: #10a37f;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+.invoice-btn {
+  background: #3ea6ff;
+}
+
+.product {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+pre {
+  background: #111;
+  padding: 10px;
+  margin-top: 15px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
