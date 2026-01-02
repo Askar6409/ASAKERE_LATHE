@@ -20,7 +20,7 @@ function render() {
   container.innerHTML = "";
   let total = 0;
   products.forEach((p,i)=>{
-    if(p.checked) total+=p.price;
+    if(p.checked) total += p.price;
     container.innerHTML += `
       <div class="product">
         <label>
@@ -28,8 +28,10 @@ function render() {
           ${p.name}
         </label>
         <span>${p.price.toLocaleString()}</span>
-        <button onclick="editProduct(${i})">✏️</button>
-        <button onclick="deleteProduct(${i})">🗑️</button>
+        <div class="actions">
+          <button class="edit" onclick="editProduct(${i})">✏️</button>
+          <button class="delete" onclick="deleteProduct(${i})">🗑️</button>
+        </div>
       </div>
     `;
   });
@@ -82,7 +84,7 @@ function generateInvoice(){
   products.forEach(p=>{
     if(p.checked){
       textInvoice += `${row}   ${p.name}   ${p.price.toLocaleString()}\n`;
-      sum+=p.price; row++;
+      sum += p.price; row++;
     }
   });
   textInvoice += `--------------------------------\nمجموع: ${sum.toLocaleString()}`;
