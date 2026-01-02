@@ -7,7 +7,6 @@ document.getElementById("date").value = jalaliDate();
 // ==== محصولات ذخیره شده در LocalStorage ====
 let products = JSON.parse(localStorage.getItem("products") || "[]");
 if(products.length === 0){
-  // محصولات اولیه
   products = [
     { name: "شستشو سرسیلندر", price: 3000000, checked: false },
     { name: "آب‌بندی سوپاپ", price: 7000000, checked: false }
@@ -28,11 +27,13 @@ function render() {
           <input type="checkbox" onchange="toggle(${i})" ${p.checked ? "checked" : ""}>
           ${p.name}
         </label>
-        <span>${p.price}</span>
+        <span>${p.price.toLocaleString()}</span>
+        <button onclick="editProduct(${i})">✏️</button>
+        <button onclick="deleteProduct(${i})">🗑️</button>
       </div>
     `;
   });
-  document.getElementById("total").innerText = "مجموع: " + total;
+  document.getElementById("total").innerText = "مجموع: " + total.toLocaleString();
 }
 
 // ==== تغییر وضعیت تیک ====
@@ -52,6 +53,26 @@ function addProduct(){
   render();
 }
 
+// ==== ویرایش محصول ====
+function editProduct(i){
+  const name = prompt("نام خدمت:", products[i].name);
+  const price = parseInt(prompt("قیمت ریال:", products[i].price));
+  if(!name || !price) return;
+  products[i].name = name;
+  products[i].price = price;
+  localStorage.setItem("products", JSON.stringify(products));
+  render();
+}
+
+// ==== حذف محصول ====
+function deleteProduct(i){
+  if(confirm("آیا مطمئن هستید که این خدمت حذف شود؟")){
+    products.splice(i,1);
+    localStorage.setItem("products", JSON.stringify(products));
+    render();
+  }
+}
+
 // ==== تولید فاکتور ====
 function generateInvoice(){
   const customer = document.getElementById("customer").value;
@@ -60,11 +81,11 @@ function generateInvoice(){
   let sum=0; let row=1;
   products.forEach(p=>{
     if(p.checked){
-      textInvoice += `${row}   ${p.name}   ${p.price}\n`;
+      textInvoice += `${row}   ${p.name}   ${p.price.toLocaleString()}\n`;
       sum+=p.price; row++;
     }
   });
-  textInvoice += `--------------------------------\nمجموع: ${sum}`;
+  textInvoice += `--------------------------------\nمجموع: ${sum.toLocaleString()}`;
   document.getElementById("invoice").innerText = textInvoice;
 }
 
