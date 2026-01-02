@@ -16,7 +16,7 @@
 <div class="app">
   <h2>🧾 تراشکاری عساکره</h2>
 
-  <button onclick="toggleLang()">🌐 FA / EN</button>
+
 
   <div class="row">
     <input id="customer" placeholder="نام مشتری">
@@ -27,12 +27,9 @@
   <div id="products"></div>
   <button onclick="addProduct()">➕ افزودن خدمت</button>
 
-  <h3 id="total">مجموع: 0 تومان</h3>
+  <h3 id="total">مجموع: 0 ریال</h3>
 
   <button class="invoice-btn" onclick="generateInvoice()">📄 صدور فاکتور</button>
-  <button onclick="exportImage()">🖼 خروجی عکس</button>
-  <button onclick="exportPDF()">📄 خروجی PDF</button>
-  <button onclick="sendWhatsApp()">📤 WhatsApp</button>
   <button onclick="sendSMS()">📩 SMS</button>
 
   <pre id="invoice"></pre>
@@ -41,3 +38,4 @@
 <script src="app.js"></script>
 </body>
 </html>
+
