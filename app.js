@@ -14,11 +14,12 @@ if(products.length === 0){
   localStorage.setItem("products", JSON.stringify(products));
 }
 
-// ==== رندر لیست ====
+// ==== رندر لیست محصولات ====
 function render() {
   const container = document.getElementById("products");
   container.innerHTML = "";
   let total = 0;
+
   products.forEach((p,i)=>{
     if(p.checked) total += p.price;
     container.innerHTML += `
@@ -35,7 +36,8 @@ function render() {
       </div>
     `;
   });
-  document.getElementById("total").innerText = "مجموع: " + total.toLocaleString();
+
+  document.getElementById("total").innerText = "مجموع: " + total.toLocaleString() + " ریال";
 }
 
 // ==== تغییر وضعیت تیک ====
@@ -80,14 +82,18 @@ function generateInvoice(){
   const customer = document.getElementById("customer").value;
   const date = document.getElementById("date").value;
   let textInvoice = `[تراشکاری عساکره]      [فاکتور]\n--------------------------------\nنام مشتری: ${customer}   تاریخ: ${date}\n--------------------------------\nردیف   محصول           قیمت (ریال)\n`;
-  let sum=0; let row=1;
+  let sum = 0;
+  let row = 1;
+
   products.forEach(p=>{
     if(p.checked){
-      textInvoice += `${row}   ${p.name}   ${p.price.toLocaleString()}\n`;
-      sum += p.price; row++;
+      textInvoice += `${row}-${p.name}   ${p.price.toLocaleString()}\n`; // خط فاصله بین ردیف و محصول
+      sum += p.price;
+      row++;
     }
   });
-  textInvoice += `--------------------------------\nمجموع: ${sum.toLocaleString()}`;
+
+  textInvoice += `--------------------------------\nمجموع: ${sum.toLocaleString()} ریال`;
   document.getElementById("invoice").innerText = textInvoice;
 }
 
@@ -97,4 +103,5 @@ function sendSMS(){
   window.location.href = "sms:?body=" + encodeURIComponent(text);
 }
 
+// ==== شروع رندر اولیه ====
 render();
