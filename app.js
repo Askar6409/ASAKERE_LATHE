@@ -1,26 +1,19 @@
-// ==== تنظیمات زبان ====
-let lang = "fa";
-const text = {
-  fa: { customer: "نام مشتری", invoice: "فاکتور", total: "مجموع", services: "خدمات" },
-  en: { customer: "Customer", invoice: "Invoice", total: "Total", services: "Services" }
-};
-
-function toggleLang() {
-  lang = lang === "fa" ? "en" : "fa";
-  render();
-}
-
 // ==== تاریخ شمسی خودکار ====
 function jalaliDate() {
   return new Date().toLocaleDateString("fa-IR");
 }
 document.getElementById("date").value = jalaliDate();
 
-// ==== محصولات اولیه ====
-let products = [
-  { name: "شستشو سرسیلندر", price: 3000000, checked: false },
-  { name: "آب‌بندی سوپاپ", price: 7000000, checked: false }
-];
+// ==== محصولات ذخیره شده در LocalStorage ====
+let products = JSON.parse(localStorage.getItem("products") || "[]");
+if(products.length === 0){
+  // محصولات اولیه
+  products = [
+    { name: "شستشو سرسیلندر", price: 3000000, checked: false },
+    { name: "آب‌بندی سوپاپ", price: 7000000, checked: false }
+  ];
+  localStorage.setItem("products", JSON.stringify(products));
+}
 
 // ==== رندر لیست ====
 function render() {
@@ -32,29 +25,30 @@ function render() {
     container.innerHTML += `
       <div class="product">
         <label>
-          <input type="checkbox" onchange="toggle(${i})">
+          <input type="checkbox" onchange="toggle(${i})" ${p.checked ? "checked" : ""}>
           ${p.name}
         </label>
-        <span>${p.price.toLocaleString()}</span>
+        <span>${p.price}</span>
       </div>
     `;
   });
-  document.getElementById("total").innerText =
-    (lang==="fa"?"مجموع: ":"Total: ") + total.toLocaleString() + (lang==="fa"?" تومان":"");
+  document.getElementById("total").innerText = "مجموع: " + total;
 }
 
 // ==== تغییر وضعیت تیک ====
 function toggle(i){
   products[i].checked = !products[i].checked;
+  localStorage.setItem("products", JSON.stringify(products));
   render();
 }
 
 // ==== افزودن محصول ====
 function addProduct(){
   const name = prompt("نام خدمت:");
-  const price = parseInt(prompt("قیمت:"));
+  const price = parseInt(prompt("قیمت ریال:"));
   if(!name || !price) return;
   products.push({name, price, checked:false});
+  localStorage.setItem("products", JSON.stringify(products));
   render();
 }
 
@@ -62,61 +56,22 @@ function addProduct(){
 function generateInvoice(){
   const customer = document.getElementById("customer").value;
   const date = document.getElementById("date").value;
-  let textInvoice = `[تراشکاری عساکره]      [${lang==="fa"?"فاکتور":"Invoice"}]\n--------------------------------\n${lang==="fa"?"نام مشتری":"Customer"}: ${customer}   ${lang==="fa"?"تاریخ":"Date"}: ${date}\n--------------------------------\nردیف   محصول           قیمت\n`;
+  let textInvoice = `[تراشکاری عساکره]      [فاکتور]\n--------------------------------\nنام مشتری: ${customer}   تاریخ: ${date}\n--------------------------------\nردیف   محصول           قیمت (ریال)\n`;
   let sum=0; let row=1;
   products.forEach(p=>{
     if(p.checked){
-      textInvoice += `${row}   ${p.name}   ${p.price.toLocaleString()}\n`;
+      textInvoice += `${row}   ${p.name}   ${p.price}\n`;
       sum+=p.price; row++;
     }
   });
-  textInvoice += `--------------------------------\n${lang==="fa"?"مجموع":"Total"}: ${sum.toLocaleString()} تومان`;
+  textInvoice += `--------------------------------\nمجموع: ${sum}`;
   document.getElementById("invoice").innerText = textInvoice;
-  saveInvoice(textInvoice);
 }
 
-// ==== ذخیره محلی فاکتورها ====
-function saveInvoice(data){
-  let list = JSON.parse(localStorage.getItem("invoices") || "[]");
-  list.push(data);
-  localStorage.setItem("invoices", JSON.stringify(list));
-}
-
-// ==== خروجی عکس ====
-function exportImage(){
-  const invoice = document.getElementById("invoice");
-  html2canvas(invoice,{backgroundColor:"#ffffff"}).then(canvas=>{
-    const link = document.createElement("a");
-    link.download = "invoice.png";
-    link.href = canvas.toDataURL();
-    link.click();
-  });
-}
-
-// ==== خروجی PDF ====
-function exportPDF(){
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
-  const invoice = document.getElementById("invoice");
-  html2canvas(invoice,{scale:2}).then(canvas=>{
-    const img = canvas.toDataURL("image/png");
-    const w = pdf.internal.pageSize.getWidth();
-    const h = (canvas.height*w)/canvas.width;
-    pdf.addImage(img,"PNG",0,10,w,h);
-    pdf.save("invoice.pdf");
-  });
-}
-
-// ==== ارسال WhatsApp و SMS ====
-function sendWhatsApp(){
-  const text = document.getElementById("invoice").innerText;
-  window.open("https://wa.me/?text="+encodeURIComponent(text));
-}
-
+// ==== ارسال SMS ====
 function sendSMS(){
   const text = document.getElementById("invoice").innerText;
-  window.location.href = "sms:?body="+encodeURIComponent(text);
+  window.location.href = "sms:?body=" + encodeURIComponent(text);
 }
 
-// ==== شروع رندر ====
 render();
