@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Asakereh Invoice</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-
-<!-- کتابخانه‌ها برای PDF و عکس -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
-  <h2>🧾 تراشکاری عساکره</h2>
+  <h1>فاکتور</h1>
 
+  <div id="products"></div>
 
-
-  <div class="row">
-    <input id="customer" placeholder="نام مشتری">
-    <input id="date" readonly>
+  <div class="total">
+    مجموع: <span id="total">0</span> ریال
   </div>
 
-  <h3>خدمات</h3>
-  <div id="products"></div>
-  <button onclick="addProduct()">➕ افزودن خدمت</button>
+  <button class="issue" onclick="issueInvoice()">صدور فاکتور</button>
 
-  <h3 id="total">مجموع: 0 ریال</h3>
-
-  <button class="invoice-btn" onclick="generateInvoice()">📄 صدور فاکتور</button>
-  <button onclick="sendSMS()">📩 SMS</button>
-
-  <pre id="invoice"></pre>
+  <h2>تاریخچه فاکتورها</h2>
+  <div id="history"></div>
 </div>
 
-<script src="app.js"></script>
+<script src="App.js"></script>
 </body>
 </html>
-
