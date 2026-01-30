@@ -1,189 +1,252 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فاکتور</title>
+<title>سیستم فروش حرفه‌ای</title>
 
 <style>
-body{
-  margin:0;
-  background:#000;
-  color:#fff;
-  font-family:tahoma;
+body {
+  background: #0f0f0f;
+  color: white;
+  font-family: sans-serif;
+  padding: 12px;
 }
-.container{
-  max-width:500px;
-  margin:auto;
-  padding:20px;
+
+h2 {
+  text-align: center;
 }
-h1,h2{text-align:center;}
-.service-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-  margin-bottom:10px;
+
+.card {
+  background: #1c1c1c;
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
-.reorder{
-  display:flex;
-  flex-direction:column;
-  font-size:12px;
-  cursor:pointer;
+
+input, button {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  margin-top: 6px;
 }
-.service-name{
-  flex:1;
+
+button {
+  background: #2ecc71;
+  font-weight: bold;
+  cursor: pointer;
 }
-input[type="number"]{
-  width:55px;
-  background:#000;
-  color:#fff;
-  border:1px solid #333;
-  border-radius:6px;
-  text-align:center;
+
+button:hover {
+  opacity: 0.85;
 }
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
+
+.product {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px 60px;
+  gap: 6px;
+  align-items: center;
+  background: #222;
+  padding: 8px;
+  border-radius: 10px;
+  margin-top: 5px;
 }
-button.issue{
-  background:#fff;
-  color:#000;
+
+.total {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }
-.history-item{
-  background:#111;
-  border-radius:10px;
-  padding:10px;
-  margin-top:8px;
-  font-size:14px;
-}
-.total{
-  text-align:center;
-  margin:15px 0;
+
+.history {
+  max-height: 250px;
+  overflow-y: auto;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>فاکتور</h1>
 
-  <div id="services"></div>
+<h2>🧾 سیستم فروش بازار</h2>
 
-  <div class="total">
-    مجموع: <span id="total">0</span> ریال
-  </div>
+<div class="card">
+  <b>👤 اطلاعات مشتری</b>
+  <input id="customerName" placeholder="نام مشتری">
+  <input id="customerPhone" placeholder="شماره موبایل">
+</div>
 
-  <button class="issue" onclick="issueInvoice()">صدور فاکتور</button>
+<div class="card">
+  <b>➕ افزودن محصول</b>
+  <input id="newName" placeholder="نام محصول">
+  <input id="newPrice" placeholder="قیمت">
+  <input id="newStock" placeholder="موجودی">
+  <button onclick="addProduct()">افزودن محصول</button>
+</div>
 
-  <h2>تاریخچه فاکتورها</h2>
-  <div id="history"></div>
+<div class="card">
+  <b>📦 محصولات</b>
+  <div id="products"></div>
+</div>
+
+<div class="card total" id="total">جمع کل: 0 تومان</div>
+
+<button onclick="generateInvoice()">🧾 صدور فاکتور</button>
+
+<div class="card">
+  <b>📜 تاریخچه فروش</b>
+  <div id="history" class="history"></div>
 </div>
 
 <script>
-// =====================
-// DATA
-// =====================
-let services = [
- {id:1,name:"شستشو سرسیلندر",price:4000000,qty:1,checked:false},
- {id:2,name:"آبندی 8 سوپاپ",price:7000000,qty:1,checked:false},
- {id:3,name:"کف‌تراشی",price:5000000,qty:1,checked:false}
+let products = JSON.parse(localStorage.getItem("products")) || [
+  { name: "پیچ", price: 1000, stock: 50 },
+  { name: "مهره", price: 800, stock: 80 },
+  { name: "بلبرینگ", price: 12000, stock: 15 }
 ];
 
-let invoiceNo = Number(localStorage.getItem("invNo")) || 1;
-let history = JSON.parse(localStorage.getItem("history")) || [];
+let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+let invoiceNumber = Number(localStorage.getItem("invoiceNumber")) || 1;
 
-// =====================
-const format = n => n.toLocaleString("fa-IR");
+const container = document.getElementById("products");
 
-function total(){
- return services.reduce((s,x)=>x.checked?s+x.price*x.qty:s,0);
+function save() {
+  localStorage.setItem("products", JSON.stringify(products));
+  localStorage.setItem("invoices", JSON.stringify(invoices));
+  localStorage.setItem("invoiceNumber", invoiceNumber);
 }
 
-// =====================
-function render(){
- const box=document.getElementById("services");
- box.innerHTML="";
- services.forEach((s,i)=>{
-  box.innerHTML+=`
-  <div class="service-row">
-    <div class="reorder">
-      <div onclick="up(${i})">▴</div>
-      <div onclick="down(${i})">▾</div>
-    </div>
-    <input type="checkbox" ${s.checked?"checked":""} onchange="toggle(${s.id})">
-    <div class="service-name">${s.name}</div>
-    <input type="number" min="1" value="${s.qty}" onchange="qty(${s.id},this.value)">
-    <div>${format(s.price*s.qty)}</div>
-  </div>`;
- });
- document.getElementById("total").innerText=format(total());
+function renderProducts() {
+  container.innerHTML = "";
+
+  products.forEach((p, i) => {
+    let div = document.createElement("div");
+    div.className = "product";
+
+    div.innerHTML = `
+      <div>${p.name}<br><small>موجودی: ${p.stock}</small></div>
+      <input id="price-${i}" value="${p.price}">
+      <input id="qty-${i}" value="0">
+      <input type="checkbox" onchange="calculateTotal()">
+    `;
+
+    container.appendChild(div);
+  });
+
+  calculateTotal();
 }
 
-function toggle(id){
- const s=services.find(x=>x.id===id);
- s.checked=!s.checked;
- render();
+function addProduct() {
+  let name = document.getElementById("newName").value.trim();
+  let price = Number(document.getElementById("newPrice").value);
+  let stock = Number(document.getElementById("newStock").value);
+
+  if (!name || price <= 0 || stock < 0) {
+    alert("اطلاعات محصول ناقص است!");
+    return;
+  }
+
+  products.push({ name, price, stock });
+  save();
+  renderProducts();
+
+  document.getElementById("newName").value = "";
+  document.getElementById("newPrice").value = "";
+  document.getElementById("newStock").value = "";
 }
 
-function qty(id,v){
- const s=services.find(x=>x.id===id);
- s.qty=Number(v)||1;
- render();
+function calculateTotal() {
+  let total = 0;
+
+  products.forEach((p, i) => {
+    let qty = Number(document.getElementById("qty-" + i).value) || 0;
+    let price = Number(document.getElementById("price-" + i).value) || 0;
+    let checked = container.children[i].querySelector("input[type=checkbox]").checked;
+
+    products[i].price = price;
+
+    if (checked) {
+      total += qty * price;
+    }
+  });
+
+  save();
+  document.getElementById("total").innerText =
+    "جمع کل: " + total.toLocaleString() + " تومان";
 }
 
-function up(i){
- if(i===0)return;
- [services[i],services[i-1]]=[services[i-1],services[i]];
- render();
+function generateInvoice() {
+  let name = document.getElementById("customerName").value.trim();
+  let phone = document.getElementById("customerPhone").value.trim();
+
+  let items = [];
+  let total = 0;
+
+  products.forEach((p, i) => {
+    let qty = Number(document.getElementById("qty-" + i).value) || 0;
+    let checked = container.children[i].querySelector("input[type=checkbox]").checked;
+
+    if (checked && qty > 0) {
+      if (qty > p.stock) {
+        alert(`موجودی ${p.name} کافی نیست`);
+        return;
+      }
+
+      p.stock -= qty;
+      let sum = qty * p.price;
+      total += sum;
+
+      items.push(`${p.name} × ${qty} = ${sum.toLocaleString()} تومان`);
+    }
+  });
+
+  if (!items.length) {
+    alert("محصولی انتخاب نشده!");
+    return;
+  }
+
+  let invoice = {
+    number: invoiceNumber++,
+    customer: name || "—",
+    phone: phone || "—",
+    date: new Date().toLocaleString(),
+    items,
+    total
+  };
+
+  invoices.unshift(invoice);
+  save();
+  renderHistory();
+  renderProducts();
+
+  document.getElementById("customerName").value = "";
+  document.getElementById("customerPhone").value = "";
+
+  alert("فاکتور صادر شد ✅");
 }
 
-function down(i){
- if(i===services.length-1)return;
- [services[i],services[i+1]]=[services[i+1],services[i]];
- render();
+function renderHistory() {
+  let div = document.getElementById("history");
+  div.innerHTML = "";
+
+  invoices.forEach(inv => {
+    let box = document.createElement("div");
+    box.style.marginBottom = "10px";
+    box.innerHTML = `
+      <b>🧾 فاکتور #${inv.number}</b><br>
+      👤 ${inv.customer} | 📱 ${inv.phone}<br>
+      📅 ${inv.date}<br>
+      ${inv.items.join("<br>")}
+      <hr>
+      <b>جمع کل: ${inv.total.toLocaleString()} تومان</b>
+      <hr>
+    `;
+    div.appendChild(box);
+  });
 }
 
-// =====================
-function issueInvoice(){
- if(total()===0){alert("خدمتی انتخاب نشده");return;}
-
- history.unshift({
-  no:invoiceNo,
-  date:new Date().toLocaleDateString("fa-IR"),
-  total:total()
- });
-
- invoiceNo++;
- localStorage.setItem("invNo",invoiceNo);
- localStorage.setItem("history",JSON.stringify(history));
-
- services.forEach(s=>{s.checked=false;s.qty=1});
- renderHistory();
- render();
-}
-
-// =====================
-function renderHistory(){
- const h=document.getElementById("history");
- h.innerHTML="";
- history.forEach(i=>{
-  h.innerHTML+=`
-   <div class="history-item">
-    فاکتور #${i.no} – ${i.date}<br>
-    ${format(i.total)} ریال
-   </div>`;
- });
-}
-
-// INIT
-render();
+renderProducts();
 renderHistory();
 </script>
+
 </body>
 </html>
