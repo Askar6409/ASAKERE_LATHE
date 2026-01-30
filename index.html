@@ -1,252 +1,632 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>سیستم فروش حرفه‌ای</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم فروش حرفه‌ای</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1c1c1c;
+            --bg-tertiary: #222;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-primary: #2ecc71;
+            --accent-hover: #27ae60;
+            --border-radius: 12px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+        }
 
-<style>
-body {
-  background: #0f0f0f;
-  color: white;
-  font-family: sans-serif;
-  padding: 12px;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-h2 {
-  text-align: center;
-}
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            padding: var(--spacing-md);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.card {
-  background: #1c1c1c;
-  border-radius: 14px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
+        h2 {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            color: var(--accent-primary);
+            font-size: 1.8rem;
+        }
 
-input, button {
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  width: 100%;
-  margin-top: 6px;
-}
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
 
-button {
-  background: #2ecc71;
-  font-weight: bold;
-  cursor: pointer;
-}
+        .card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
 
-button:hover {
-  opacity: 0.85;
-}
+        .card:hover {
+            transform: translateY(-2px);
+        }
 
-.product {
-  display: grid;
-  grid-template-columns: 1fr 80px 80px 60px;
-  gap: 6px;
-  align-items: center;
-  background: #222;
-  padding: 8px;
-  border-radius: 10px;
-  margin-top: 5px;
-}
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-primary);
+            font-size: 1.1rem;
+        }
 
-.total {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
+        .card-title i {
+            font-size: 1.2rem;
+        }
 
-.history {
-  max-height: 250px;
-  overflow-y: auto;
-}
-</style>
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px var(--spacing-md);
+            background: var(--bg-tertiary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px var(--spacing-md);
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .product-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: var(--spacing-sm);
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .product-info h4 {
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .product-info small {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .product-input {
+            width: 100%;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .product-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, var(--accent-primary), #27ae60);
+            color: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .history-section {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: var(--spacing-sm);
+        }
+
+        .history-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .history-section::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .history-section::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .invoice-item {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border-right: 4px solid var(--accent-primary);
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid #333;
+        }
+
+        .invoice-items {
+            margin: var(--spacing-sm) 0;
+            padding-right: var(--spacing-md);
+        }
+
+        .invoice-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .invoice-total {
+            text-align: left;
+            font-weight: bold;
+            color: var(--accent-primary);
+            margin-top: var(--spacing-sm);
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: var(--spacing-md);
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .alert.show {
+            transform: translateX(0);
+        }
+
+        .alert.error {
+            background: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-item {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .product-input {
+                text-align: right;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
 </head>
-
 <body>
+    <h2><i class='bx bx-store'></i> سیستم فروش حرفه‌ای</h2>
 
-<h2>🧾 سیستم فروش بازار</h2>
+    <div class="container">
+        <div class="card">
+            <div class="card-title">
+                <i class='bx bx-user'></i>
+                اطلاعات مشتری
+            </div>
+            <div class="form-group">
+                <label class="form-label">نام مشتری</label>
+                <input type="text" id="customerName" class="form-input" placeholder="نام کامل مشتری">
+            </div>
+            <div class="form-group">
+                <label class="form-label">شماره تماس</label>
+                <input type="tel" id="customerPhone" class="form-input" placeholder="09xxxxxxxxx">
+            </div>
+        </div>
 
-<div class="card">
-  <b>👤 اطلاعات مشتری</b>
-  <input id="customerName" placeholder="نام مشتری">
-  <input id="customerPhone" placeholder="شماره موبایل">
-</div>
+        <div class="card">
+            <div class="card-title">
+                <i class='bx bx-plus-circle'></i>
+                افزودن محصول جدید
+            </div>
+            <div class="form-group">
+                <label class="form-label">نام محصول</label>
+                <input type="text" id="newName" class="form-input" placeholder="نام محصول">
+            </div>
+            <div class="form-group">
+                <label class="form-label">قیمت (تومان)</label>
+                <input type="number" id="newPrice" class="form-input" placeholder="قیمت واحد">
+            </div>
+            <div class="form-group">
+                <label class="form-label">موجودی اولیه</label>
+                <input type="number" id="newStock" class="form-input" placeholder="تعداد موجودی">
+            </div>
+            <button class="btn" onclick="addProduct()">
+                <i class='bx bx-plus btn-icon'></i>
+                افزودن محصول
+            </button>
+        </div>
+    </div>
 
-<div class="card">
-  <b>➕ افزودن محصول</b>
-  <input id="newName" placeholder="نام محصول">
-  <input id="newPrice" placeholder="قیمت">
-  <input id="newStock" placeholder="موجودی">
-  <button onclick="addProduct()">افزودن محصول</button>
-</div>
+    <div class="card">
+        <div class="card-title">
+            <i class='bx bx-package'></i>
+            لیست محصولات
+        </div>
+        <div id="products" class="product-grid"></div>
+    </div>
 
-<div class="card">
-  <b>📦 محصولات</b>
-  <div id="products"></div>
-</div>
+    <div id="total" class="total-section">
+        جمع کل: 0 تومان
+    </div>
 
-<div class="card total" id="total">جمع کل: 0 تومان</div>
+    <button class="btn" onclick="generateInvoice()" style="margin-bottom: var(--spacing-lg);">
+        <i class='bx bx-receipt btn-icon'></i>
+        صدور فاکتور
+    </button>
 
-<button onclick="generateInvoice()">🧾 صدور فاکتور</button>
+    <div class="card">
+        <div class="card-title">
+            <i class='bx bx-history'></i>
+            تاریخچه فروش
+        </div>
+        <div id="history" class="history-section"></div>
+    </div>
 
-<div class="card">
-  <b>📜 تاریخچه فروش</b>
-  <div id="history" class="history"></div>
-</div>
+    <div id="alert" class="alert"></div>
 
-<script>
-let products = JSON.parse(localStorage.getItem("products")) || [
-  { name: "پیچ", price: 1000, stock: 50 },
-  { name: "مهره", price: 800, stock: 80 },
-  { name: "بلبرینگ", price: 12000, stock: 15 }
-];
+    <script>
+        class SalesSystem {
+            constructor() {
+                this.products = JSON.parse(localStorage.getItem("products")) || [
+                    { id: 1, name: "پیچ", price: 1000, stock: 50 },
+                    { id: 2, name: "مهره", price: 800, stock: 80 },
+                    { id: 3, name: "بلبرینگ", price: 12000, stock: 15 }
+                ];
+                this.invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+                this.invoiceNumber = Number(localStorage.getItem("invoiceNumber")) || 1;
+                this.container = document.getElementById("products");
+                this.init();
+            }
 
-let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-let invoiceNumber = Number(localStorage.getItem("invoiceNumber")) || 1;
+            init() {
+                this.renderProducts();
+                this.renderHistory();
+                this.setupEventListeners();
+            }
 
-const container = document.getElementById("products");
+            setupEventListeners() {
+                document.addEventListener('input', (e) => {
+                    if (e.target.id.startsWith('qty-') || e.target.id.startsWith('price-')) {
+                        this.calculateTotal();
+                    }
+                });
 
-function save() {
-  localStorage.setItem("products", JSON.stringify(products));
-  localStorage.setItem("invoices", JSON.stringify(invoices));
-  localStorage.setItem("invoiceNumber", invoiceNumber);
-}
+                document.addEventListener('change', (e) => {
+                    if (e.target.type === 'checkbox') {
+                        this.calculateTotal();
+                    }
+                });
+            }
 
-function renderProducts() {
-  container.innerHTML = "";
+            save() {
+                localStorage.setItem("products", JSON.stringify(this.products));
+                localStorage.setItem("invoices", JSON.stringify(this.invoices));
+                localStorage.setItem("invoiceNumber", this.invoiceNumber);
+            }
 
-  products.forEach((p, i) => {
-    let div = document.createElement("div");
-    div.className = "product";
+            showAlert(message, type = 'success') {
+                const alert = document.getElementById('alert');
+                alert.textContent = message;
+                alert.className = `alert ${type}`;
+                alert.classList.add('show');
+                
+                setTimeout(() => {
+                    alert.classList.remove('show');
+                }, 3000);
+            }
 
-    div.innerHTML = `
-      <div>${p.name}<br><small>موجودی: ${p.stock}</small></div>
-      <input id="price-${i}" value="${p.price}">
-      <input id="qty-${i}" value="0">
-      <input type="checkbox" onchange="calculateTotal()">
-    `;
+            renderProducts() {
+                this.container.innerHTML = '';
+                
+                this.products.forEach((product, index) => {
+                    const productElement = document.createElement('div');
+                    productElement.className = 'product-item';
+                    
+                    productElement.innerHTML = `
+                        <div class="product-info">
+                            <h4>${product.name}</h4>
+                            <small>موجودی: ${product.stock.toLocaleString()} عدد</small>
+                        </div>
+                        <input type="number" 
+                               id="price-${index}" 
+                               class="product-input" 
+                               value="${product.price}" 
+                               min="0">
+                        <input type="number" 
+                               id="qty-${index}" 
+                               class="product-input" 
+                               value="0" 
+                               min="0" 
+                               max="${product.stock}">
+                        <input type="checkbox" 
+                               class="product-checkbox" 
+                               ${product.stock === 0 ? 'disabled' : ''}>
+                    `;
+                    
+                    this.container.appendChild(productElement);
+                });
+                
+                this.calculateTotal();
+            }
 
-    container.appendChild(div);
-  });
+            addProduct() {
+                const name = document.getElementById("newName").value.trim();
+                const price = Number(document.getElementById("newPrice").value);
+                const stock = Number(document.getElementById("newStock").value);
 
-  calculateTotal();
-}
+                if (!name) {
+                    this.showAlert("نام محصول الزامی است!", "error");
+                    return;
+                }
 
-function addProduct() {
-  let name = document.getElementById("newName").value.trim();
-  let price = Number(document.getElementById("newPrice").value);
-  let stock = Number(document.getElementById("newStock").value);
+                if (price <= 0) {
+                    this.showAlert("قیمت باید بیشتر از صفر باشد!", "error");
+                    return;
+                }
 
-  if (!name || price <= 0 || stock < 0) {
-    alert("اطلاعات محصول ناقص است!");
-    return;
-  }
+                if (stock < 0) {
+                    this.showAlert("موجودی نمی‌تواند منفی باشد!", "error");
+                    return;
+                }
 
-  products.push({ name, price, stock });
-  save();
-  renderProducts();
+                const newProduct = {
+                    id: Date.now(),
+                    name,
+                    price,
+                    stock
+                };
 
-  document.getElementById("newName").value = "";
-  document.getElementById("newPrice").value = "";
-  document.getElementById("newStock").value = "";
-}
+                this.products.push(newProduct);
+                this.save();
+                this.renderProducts();
 
-function calculateTotal() {
-  let total = 0;
+                document.getElementById("newName").value = "";
+                document.getElementById("newPrice").value = "";
+                document.getElementById("newStock").value = "";
 
-  products.forEach((p, i) => {
-    let qty = Number(document.getElementById("qty-" + i).value) || 0;
-    let price = Number(document.getElementById("price-" + i).value) || 0;
-    let checked = container.children[i].querySelector("input[type=checkbox]").checked;
+                this.showAlert("محصول با موفقیت اضافه شد!");
+            }
 
-    products[i].price = price;
+            calculateTotal() {
+                let total = 0;
 
-    if (checked) {
-      total += qty * price;
-    }
-  });
+                this.products.forEach((product, index) => {
+                    const qty = Number(document.getElementById(`qty-${index}`).value) || 0;
+                    const price = Number(document.getElementById(`price-${index}`).value) || 0;
+                    const checkbox = document.querySelectorAll('.product-checkbox')[index];
 
-  save();
-  document.getElementById("total").innerText =
-    "جمع کل: " + total.toLocaleString() + " تومان";
-}
+                    if (checkbox && checkbox.checked) {
+                        total += qty * price;
+                    }
+                });
 
-function generateInvoice() {
-  let name = document.getElementById("customerName").value.trim();
-  let phone = document.getElementById("customerPhone").value.trim();
+                const totalElement = document.getElementById("total");
+                totalElement.innerHTML = `
+                    <i class='bx bx-calculator'></i>
+                    جمع کل: ${total.toLocaleString()} تومان
+                `;
+            }
 
-  let items = [];
-  let total = 0;
+            generateInvoice() {
+                const name = document.getElementById("customerName").value.trim();
+                const phone = document.getElementById("customerPhone").value.trim();
+                const items = [];
+                let total = 0;
+                let hasError = false;
 
-  products.forEach((p, i) => {
-    let qty = Number(document.getElementById("qty-" + i).value) || 0;
-    let checked = container.children[i].querySelector("input[type=checkbox]").checked;
+                this.products.forEach((product, index) => {
+                    const qty = Number(document.getElementById(`qty-${index}`).value) || 0;
+                    const checkbox = document.querySelectorAll('.product-checkbox')[index];
 
-    if (checked && qty > 0) {
-      if (qty > p.stock) {
-        alert(`موجودی ${p.name} کافی نیست`);
-        return;
-      }
+                    if (checkbox && checkbox.checked && qty > 0) {
+                        if (qty > product.stock) {
+                            this.showAlert(`موجودی ${product.name} کافی نیست!`, "error");
+                            hasError = true;
+                            return;
+                        }
 
-      p.stock -= qty;
-      let sum = qty * p.price;
-      total += sum;
+                        const subtotal = qty * product.price;
+                        total += subtotal;
 
-      items.push(`${p.name} × ${qty} = ${sum.toLocaleString()} تومان`);
-    }
-  });
+                        items.push({
+                            name: product.name,
+                            quantity: qty,
+                            price: product.price,
+                            subtotal
+                        });
 
-  if (!items.length) {
-    alert("محصولی انتخاب نشده!");
-    return;
-  }
+                        product.stock -= qty;
+                    }
+                });
 
-  let invoice = {
-    number: invoiceNumber++,
-    customer: name || "—",
-    phone: phone || "—",
-    date: new Date().toLocaleString(),
-    items,
-    total
-  };
+                if (hasError) return;
 
-  invoices.unshift(invoice);
-  save();
-  renderHistory();
-  renderProducts();
+                if (items.length === 0) {
+                    this.showAlert("لطفا حداقل یک محصول انتخاب کنید!", "error");
+                    return;
+                }
 
-  document.getElementById("customerName").value = "";
-  document.getElementById("customerPhone").value = "";
+                const invoice = {
+                    number: this.invoiceNumber++,
+                    customer: name || "مشتری ناشناس",
+                    phone: phone || "ثبت نشده",
+                    date: new Date().toLocaleString('fa-IR'),
+                    items,
+                    total
+                };
 
-  alert("فاکتور صادر شد ✅");
-}
+                this.invoices.unshift(invoice);
+                this.save();
+                this.renderHistory();
+                this.renderProducts();
 
-function renderHistory() {
-  let div = document.getElementById("history");
-  div.innerHTML = "";
+                document.getElementById("customerName").value = "";
+                document.getElementById("customerPhone").value = "";
 
-  invoices.forEach(inv => {
-    let box = document.createElement("div");
-    box.style.marginBottom = "10px";
-    box.innerHTML = `
-      <b>🧾 فاکتور #${inv.number}</b><br>
-      👤 ${inv.customer} | 📱 ${inv.phone}<br>
-      📅 ${inv.date}<br>
-      ${inv.items.join("<br>")}
-      <hr>
-      <b>جمع کل: ${inv.total.toLocaleString()} تومان</b>
-      <hr>
-    `;
-    div.appendChild(box);
-  });
-}
+                this.showAlert(`فاکتور شماره ${invoice.number} با موفقیت صادر شد!`);
+            }
 
-renderProducts();
-renderHistory();
-</script>
+            renderHistory() {
+                const historyContainer = document.getElementById("history");
+                historyContainer.innerHTML = '';
 
+                if (this.invoices.length === 0) {
+                    historyContainer.innerHTML = `
+                        <div style="text-align: center; color: var(--text-secondary); padding: var(--spacing-lg);">
+                            <i class='bx bx-info-circle' style="font-size: 3rem; margin-bottom: var(--spacing-md);"></i>
+                            <p>هیچ فاکتوری ثبت نشده است</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.invoices.forEach(invoice => {
+                    const invoiceElement = document.createElement('div');
+                    invoiceElement.className = 'invoice-item';
+
+                    invoiceElement.innerHTML = `
+                        <div class="invoice-header">
+                            <div>
+                                <strong>فاکتور #${invoice.number}</strong>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">
+                                    ${invoice.date}
+                                </div>
+                            </div>
+                            <div style="text-align: left;">
+                                <div><i class='bx bx-user'></i> ${invoice.customer}</div>
+                                <div><i class='bx bx-phone'></i> ${invoice.phone}</div>
+                            </div>
+                        </div>
+                        <div class="invoice-items">
+                            ${invoice.items.map(item => `
+                                <div class="invoice-item-row">
+                                    <span>${item.name}</span>
+                                    <span>${item.quantity} × ${item.price.toLocaleString()} تومان</span>
+                                    <span>${item.subtotal.toLocaleString()} تومان</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="invoice-total">
+                            <i class='bx bx-credit-card'></i>
+                            مبلغ نهایی: ${invoice.total.toLocaleString()} تومان
+                        </div>
+                    `;
+
+                    historyContainer.appendChild(invoiceElement);
+                });
+            }
+        }
+
+        // Initialize the sales system
+        const salesSystem = new SalesSystem();
+
+        // Make functions globally available for onclick attributes
+        function addProduct() {
+            salesSystem.addProduct();
+        }
+
+        function generateInvoice() {
+            salesSystem.generateInvoice();
+        }
+
+        function calculateTotal() {
+            salesSystem.calculateTotal();
+        }
+    </script>
 </body>
 </html>
