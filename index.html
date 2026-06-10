@@ -1,80 +1,25 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم فروش حرفه‌ای</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>تراشکاری عساکره</title>
 </head>
 <body>
-    <div class="center-container">
-        <h2><i class='bx bx-store'></i> سیستم فروش حرفه‌ای</h2>
+    <div class="container">
+        <header>
+            <h1>تراشکاری عساکره</h1>
+            <div class="date" id="current-date"></div>
+        </header>
 
-        <div class="container">
-            <div class="card">
-                <div class="card-title">
-                    <i class='bx bx-user'></i>
-                    اطلاعات مشتری
-                </div>
-                <div class="form-group">
-                    <input type="text" id="customerName" class="form-input" placeholder="نام مشتری">
-                </div>
-                <div class="form-group">
-                    <input type="tel" id="customerPhone" class="form-input" placeholder="شماره تماس">
-                </div>
-            </div>
+        <div id="services-list"></div>
 
-            <div class="card">
-                <div class="card-title">
-                    <i class='bx bx-plus-circle'></i>
-                    افزودن محصول جدید
-                </div>
-                <div class="form-group">
-                    <input type="text" id="newName" class="form-input" placeholder="نام محصول">
-                </div>
-                <div class="form-group">
-                    <input type="number" id="newPrice" class="form-input" placeholder="قیمت (ریال)">
-                </div>
-                <div class="form-group">
-                    <input type="number" id="newStock" class="form-input" placeholder="موجودی اولیه">
-                </div>
-                <button class="btn" id="addProductBtn">
-                    <i class='bx bx-plus btn-icon'></i>
-                    افزودن محصول
-                </button>
-            </div>
+        <div class="total-bar">
+            <span id="total-display">مجموع: ۰ ریال</span>
         </div>
 
-        <div class="card full-width">
-            <div class="card-title">
-                <i class='bx bx-package'></i>
-                لیست محصولات
-            </div>
-            <div id="products" class="product-grid"></div>
-        </div>
-
-        <div id="total" class="total-section">
-            <i class='bx bx-calculator'></i>
-            جمع کل: 0 ریال
-        </div>
-
-        <button class="btn full-width" id="generateInvoiceBtn">
-            <i class='bx bx-receipt btn-icon'></i>
-            صدور فاکتور
-        </button>
-
-        <div class="card full-width">
-            <div class="card-title">
-                <i class='bx bx-history'></i>
-                تاریخچه فروش
-            </div>
-            <div id="history" class="history-section"></div>
-        </div>
+        <button id="add-service-btn">افزودن خدمت</button>
     </div>
-
-    <div id="alert" class="alert"></div>
-
     <script src="app.js"></script>
 </body>
 </html>
