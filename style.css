@@ -11,7 +11,7 @@ body {
 }
 
 .app {
-  max-width: 820px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 16px;
 }
@@ -65,7 +65,8 @@ body {
 }
 
 .customer-box input,
-.add-box input {
+.add-box input,
+.sms-box {
   width: 100%;
   background: #0f0f0f;
   color: #fff;
@@ -74,6 +75,12 @@ body {
   padding: 10px 12px;
   border-radius: 10px;
   font-size: 15px;
+}
+
+.sms-box {
+  margin-top: 14px;
+  min-height: 130px;
+  resize: vertical;
 }
 
 .table-head,
@@ -168,8 +175,15 @@ body {
   margin-top: 16px;
 }
 
-.add-box button,
-.actions button {
+.actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.actions button,
+.add-box button {
   border: none;
   border-radius: 12px;
   padding: 11px 14px;
@@ -177,15 +191,27 @@ body {
   cursor: pointer;
   font-weight: bold;
   transition: 0.2s;
+  color: #fff;
+}
+
+#saveBtn {
+  background: #16a34a;
+}
+
+#printBtn {
+  background: #2563eb;
+}
+
+#smsBtn {
+  background: #8b5cf6;
+}
+
+#resetBtn {
+  background: #dc2626;
 }
 
 .add-box button {
   background: #0ea5e9;
-  color: #fff;
-}
-
-.add-box button:hover {
-  background: #0284c7;
 }
 
 .total-box {
@@ -203,37 +229,67 @@ body {
   color: #7cff9c;
 }
 
-.actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.actions button {
-  background: #16a34a;
-  color: #fff;
-}
-
-.actions button.danger {
-  background: #dc2626;
-}
-
-.actions button:hover {
-  filter: brightness(1.05);
-}
-
 @media (max-width: 700px) {
   .table-head,
   .service-row {
     grid-template-columns: 50px 1fr 110px 90px;
   }
 
-  .add-box {
-    grid-template-columns: 1fr;
-  }
-
+  .add-box,
   .actions {
     grid-template-columns: 1fr;
+  }
+}
+
+/* PRINT */
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .app {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .invoice-card {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  .no-print,
+  .actions-icons,
+  .service-name input[type="checkbox"] {
+    display: none !important;
+  }
+
+  .table-head,
+  .service-row,
+  .total-box,
+  .header {
+    color: #000;
+  }
+
+  .service-row {
+    background: #fff;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+
+  .service-price {
+    color: #000;
+  }
+
+  .total-box {
+    border: 1px solid #000;
+    background: #fff;
+  }
+
+  .table-head {
+    border-bottom: 1px solid #000;
   }
 }
