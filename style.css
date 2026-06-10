@@ -47,6 +47,15 @@ body {
   gap: 8px;
   color: #bbb;
   font-size: 15px;
+  .date-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  color: #bbb;
+  font-size: 15px;
+  flex-wrap: wrap;
+}
+
 }
 
 .customer-box {
