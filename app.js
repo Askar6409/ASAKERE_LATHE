@@ -1,6 +1,7 @@
 const servicesList = document.getElementById("services-list");
 const totalDisplay = document.getElementById("total-display");
 const currentDate = document.getElementById("current-date");
+const currentTime = document.getElementById("current-time");
 const customerNameInput = document.getElementById("customerName");
 const newServiceNameInput = document.getElementById("newServiceName");
 const newServicePriceInput = document.getElementById("newServicePrice");
@@ -17,6 +18,14 @@ let state = loadState();
 
 function getTodayPersian() {
   return new Date().toLocaleDateString("fa-IR");
+}
+
+function getCurrentTimePersian() {
+  return new Date().toLocaleTimeString("fa-IR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
 }
 
 function formatMoney(value) {
@@ -42,6 +51,7 @@ function loadState() {
   return {
     customerName: "عباس عساکره",
     date: getTodayPersian(),
+    time: getCurrentTimePersian(),
     services: defaultServices()
   };
 }
@@ -62,8 +72,9 @@ function buildSmsText() {
   const selected = getSelectedServices();
 
   let text = ` فاکتور \n`;
-  text += `تراشکاری عساکره \n`;
+  text += ` تراشکاری عساکره \n`;
   text += `تاریخ: ${state.date}\n`;
+  text += `ساعت: ${state.time}\n`;
   text += `نام مشتری: ${state.customerName || "-"}\n`;
   text += `----------------------\n`;
 
@@ -83,6 +94,7 @@ function buildSmsText() {
 
 function render() {
   currentDate.textContent = state.date || getTodayPersian();
+  currentTime.textContent = state.time || getCurrentTimePersian();
   customerNameInput.value = state.customerName || "";
   servicesList.innerHTML = "";
 
@@ -196,23 +208,38 @@ addServiceBtn.addEventListener("click", () => {
 });
 
 saveBtn.addEventListener("click", () => {
+  state.date = getTodayPersian();
+  state.time = getCurrentTimePersian();
   saveState();
+  render();
   alert("فاکتور ذخیره شد.");
 });
 
 resetBtn.addEventListener("click", () => {
-  if (confirm("همه اطلاعات پاک شوند؟")) {
-    localStorage.removeItem(STORAGE_KEY);
-    state = loadState();
+  if (confirm("فقط تیک‌های فاکتور قبلی پاک شوند؟")) {
+    state.services.forEach(service => {
+      service.selected = false;
+    });
+
+    state.date = getTodayPersian();
+    state.time = getCurrentTimePersian();
+    saveState();
     render();
   }
 });
 
 printBtn.addEventListener("click", () => {
+  state.time = getCurrentTimePersian();
+  saveState();
+  render();
   window.print();
 });
 
 smsBtn.addEventListener("click", async () => {
+  state.time = getCurrentTimePersian();
+  saveState();
+  render();
+
   const text = buildSmsText();
   smsText.value = text;
 
@@ -226,5 +253,12 @@ smsBtn.addEventListener("click", async () => {
   }
 });
 
+// بروزرسانی ساعت زنده
+setInterval(() => {
+  state.time = getCurrentTimePersian();
+  currentTime.textContent = state.time;
+}, 1000);
+
 currentDate.textContent = getTodayPersian();
+currentTime.textContent = getCurrentTimePersian();
 render();
