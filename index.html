@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="app">
-    <div class="invoice-card">
+    <div class="invoice-card" id="invoiceCard">
       <div class="header">
         <h1>تراشکاری عساکره </h1>
         <h2>فاکتور </h2>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="customer-box">
+      <div class="customer-box no-print">
         <label for="customerName">نام مشتری:</label>
         <input type="text" id="customerName" placeholder="مثلاً عباس عساکره" />
       </div>
@@ -33,7 +33,7 @@
 
       <div id="services-list"></div>
 
-      <div class="add-box">
+      <div class="add-box no-print">
         <input type="text" id="newServiceName" placeholder="نام خدمت جدید" />
         <input type="number" id="newServicePrice" placeholder="قیمت" />
         <button id="addServiceBtn">افزودن خدمت</button>
@@ -44,10 +44,14 @@
         <strong id="total-display">0 تومان</strong>
       </div>
 
-      <div class="actions">
+      <div class="actions no-print">
         <button id="saveBtn">ذخیره فاکتور</button>
+        <button id="printBtn">چاپ</button>
+        <button id="smsBtn">متن SMS</button>
         <button id="resetBtn" class="danger">پاک کردن</button>
       </div>
+
+      <textarea id="smsText" class="sms-box no-print" readonly></textarea>
     </div>
   </div>
 
