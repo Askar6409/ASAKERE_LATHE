@@ -1,25 +1,56 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>تراشکاری عساکره</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تراشکاری عساکره</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>تراشکاری عساکره</h1>
-            <div class="date" id="current-date"></div>
-        </header>
-
-        <div id="services-list"></div>
-
-        <div class="total-bar">
-            <span id="total-display">مجموع: ۰ ریال</span>
+  <div class="app">
+    <div class="invoice-card">
+      <div class="header">
+        <h1>تراشکاری عساکره آ</h1>
+        <h2>فاکتور آ</h2>
+        <div class="date-row">
+          <span>تاریخ:</span>
+          <span id="current-date"></span>
         </div>
+      </div>
 
-        <button id="add-service-btn">افزودن خدمت</button>
+      <div class="customer-box">
+        <label for="customerName">نام مشتری:</label>
+        <input type="text" id="customerName" placeholder="مثلاً عباس عساکره" />
+      </div>
+
+      <div class="table-head">
+        <span>ردیف</span>
+        <span>محصول / خدمت</span>
+        <span>قیمت</span>
+        <span>عملیات</span>
+      </div>
+
+      <div id="services-list"></div>
+
+      <div class="add-box">
+        <input type="text" id="newServiceName" placeholder="نام خدمت جدید" />
+        <input type="number" id="newServicePrice" placeholder="قیمت" />
+        <button id="addServiceBtn">افزودن خدمت</button>
+      </div>
+
+      <div class="total-box">
+        <span>مجموع:</span>
+        <strong id="total-display">0 تومان</strong>
+      </div>
+
+      <div class="actions">
+        <button id="saveBtn">ذخیره فاکتور</button>
+        <button id="resetBtn" class="danger">پاک کردن</button>
+      </div>
     </div>
-    <script src="app.js"></script>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
