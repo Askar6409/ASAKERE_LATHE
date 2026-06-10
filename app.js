@@ -7,6 +7,9 @@ const newServicePriceInput = document.getElementById("newServicePrice");
 const addServiceBtn = document.getElementById("addServiceBtn");
 const saveBtn = document.getElementById("saveBtn");
 const resetBtn = document.getElementById("resetBtn");
+const printBtn = document.getElementById("printBtn");
+const smsBtn = document.getElementById("smsBtn");
+const smsText = document.getElementById("smsText");
 
 const STORAGE_KEY = "askar_invoice_data";
 
@@ -47,10 +50,40 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function getSelectedServices() {
+  return state.services.filter(s => s.selected);
+}
+
+function getTotal() {
+  return getSelectedServices().reduce((sum, s) => sum + Number(s.price || 0), 0);
+}
+
+function buildSmsText() {
+  const selected = getSelectedServices();
+
+  let text = `تراشکاری عساکره آ\n`;
+  text += `فاکتور آ\n`;
+  text += `تاریخ: ${state.date}\n`;
+  text += `نام مشتری: ${state.customerName || "-"}\n`;
+  text += `----------------------\n`;
+
+  if (selected.length === 0) {
+    text += `خدمتی انتخاب نشده است.\n`;
+  } else {
+    selected.forEach((s, i) => {
+      text += `${i + 1}. ${s.name} - ${formatMoney(s.price)} ریال\n`;
+    });
+  }
+
+  text += `----------------------\n`;
+  text += `مجموع: ${formatMoney(getTotal())} تومان`;
+
+  return text;
+}
+
 function render() {
   currentDate.textContent = state.date || getTodayPersian();
   customerNameInput.value = state.customerName || "";
-
   servicesList.innerHTML = "";
 
   state.services.forEach((service, index) => {
@@ -58,14 +91,11 @@ function render() {
     row.className = "service-row";
     row.innerHTML = `
       <div class="row-index">${index + 1}</div>
-
       <div class="service-name">
         <input type="checkbox" ${service.selected ? "checked" : ""} data-id="${service.id}">
         <span class="service-title">${service.name}</span>
       </div>
-
       <div class="service-price">${formatMoney(service.price)} ریال</div>
-
       <div class="actions-icons">
         <button class="icon-btn edit" data-edit="${service.id}" title="ویرایش">
           <i class='bx bx-pencil'></i>
@@ -79,15 +109,13 @@ function render() {
   });
 
   updateTotal();
+  smsText.value = buildSmsText();
   saveState();
 }
 
 function updateTotal() {
-  const total = state.services
-    .filter(s => s.selected)
-    .reduce((sum, s) => sum + Number(s.price || 0), 0);
-
-  totalDisplay.textContent = `${formatMoney(total)} تومان`;
+  totalDisplay.textContent = `${formatMoney(getTotal())} تومان`;
+  smsText.value = buildSmsText();
 }
 
 servicesList.addEventListener("change", (e) => {
@@ -117,7 +145,7 @@ servicesList.addEventListener("click", (e) => {
     const newPrice = prompt("قیمت جدید:", service.price);
     if (newPrice === null) return;
 
-    const parsedPrice = Number(newPrice.replace(/[^\d]/g, ""));
+    const parsedPrice = Number(String(newPrice).replace(/[^\d]/g, ""));
     if (!newName.trim() || !Number.isFinite(parsedPrice)) {
       alert("نام یا قیمت نامعتبر است.");
       return;
@@ -143,6 +171,7 @@ servicesList.addEventListener("click", (e) => {
 customerNameInput.addEventListener("input", () => {
   state.customerName = customerNameInput.value;
   saveState();
+  updateTotal();
 });
 
 addServiceBtn.addEventListener("click", () => {
@@ -176,6 +205,24 @@ resetBtn.addEventListener("click", () => {
     localStorage.removeItem(STORAGE_KEY);
     state = loadState();
     render();
+  }
+});
+
+printBtn.addEventListener("click", () => {
+  window.print();
+});
+
+smsBtn.addEventListener("click", async () => {
+  const text = buildSmsText();
+  smsText.value = text;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("متن فاکتور برای SMS کپی شد.");
+  } catch {
+    smsText.select();
+    document.execCommand("copy");
+    alert("متن فاکتور کپی شد.");
   }
 });
 
