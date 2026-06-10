@@ -207,13 +207,7 @@ addServiceBtn.addEventListener("click", () => {
   render();
 });
 
-saveBtn.addEventListener("click", () => {
-  state.date = getTodayPersian();
-  state.time = getCurrentTimePersian();
-  saveState();
-  render();
-  alert("فاکتور ذخیره شد.");
-});
+
 
 resetBtn.addEventListener("click", () => {
   if (confirm("فقط تیک‌های فاکتور قبلی پاک شوند؟")) {
@@ -228,12 +222,7 @@ resetBtn.addEventListener("click", () => {
   }
 });
 
-printBtn.addEventListener("click", () => {
-  state.time = getCurrentTimePersian();
-  saveState();
-  render();
-  window.print();
-});
+
 
 smsBtn.addEventListener("click", async () => {
   state.time = getCurrentTimePersian();
