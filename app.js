@@ -61,8 +61,8 @@ function getTotal() {
 function buildSmsText() {
   const selected = getSelectedServices();
 
-  let text = `تراشکاری عساکره \n`;
-  text += `فاکتور \n`;
+  let text = ` فاکتور \n`;
+  text += `تراشکاری عساکره \n`;
   text += `تاریخ: ${state.date}\n`;
   text += `نام مشتری: ${state.customerName || "-"}\n`;
   text += `----------------------\n`;
