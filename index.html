@@ -11,32 +11,23 @@
   <div class="app">
     <div class="invoice-card" id="invoiceCard">
       <div class="header">
-        <h1>تراشکاری عساکره </h1>
-        <h2>فاکتور </h2>
+        <h1>تراشکاری عساکره</h1>
+        <h2>فاکتور</h2>
         <div class="date-row">
-          <div class="date-row">
-  <span>تاریخ:</span>
-  <span id="current-date"></span>
-  <span>ساعت:</span>
-  <span id="current-time"></span>
-</div>
-
+          <span>تاریخ:</span>
+          <span id="current-date"></span>
+          <span>ساعت:</span>
+          <span id="current-time"></span>
         </div>
       </div>
 
       <div class="customer-box no-print">
         <label for="customerName">نام مشتری:</label>
         <input type="text" id="customerName" placeholder="مثلاً عباس عساکره" />
+        
+        <label for="customerPhone">شماره موبایل:</label>
+        <input type="tel" id="customerPhone" placeholder="09xxxxxxxxx" />
       </div>
-<!-- در بخش اطلاعات مشتری در هدر -->
-<input type="text" id="customerName" placeholder="نام مشتری">
-<input type="tel" id="customerPhone" placeholder="شماره موبایل">
-
-<!-- در انتهای فایل، قبل از بستن تگ body -->
-<div id="history-section">
-    <h3>سوابق فاکتورها</h3>
-    <div id="history-list"></div>
-</div>
 
       <div class="table-head">
         <span>ردیف</span>
@@ -59,12 +50,18 @@
       </div>
 
       <div class="actions no-print">
-        
+        <button id="saveInvoiceBtn">ذخیره در سوابق</button>
         <button id="smsBtn">متن SMS</button>
-        <button id="resetBtn" class="danger">پاک کردن</button>
+        <button id="resetBtn" class="danger">پاک کردن انتخاب‌ها</button>
       </div>
 
       <textarea id="smsText" class="sms-box no-print" readonly></textarea>
+    </div>
+
+    <!-- بخش سوابق فاکتورها -->
+    <div id="history-section" class="no-print">
+        <h3>سوابق فاکتورها</h3>
+        <div id="history-list"></div>
     </div>
   </div>
 
