@@ -4,294 +4,271 @@
 
 body {
   margin: 0;
-  font-family: Tahoma, Arial, sans-serif;
-  background: #111;
-  color: #fff;
+  font-family: Vazirmatn, Tahoma, Arial, sans-serif;
+  background: #0f1115;
+  color: #e8e8e8;
   direction: rtl;
 }
 
 .app {
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 16px;
 }
 
-.invoice-card {
-  background: #1a1a1a;
-  border: 1px solid #2b2b2b;
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-}
-
 .header {
   text-align: center;
-  margin-bottom: 18px;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 26px;
-  color: #f5f5f5;
-}
-
-.header h2 {
-  margin: 6px 0 10px;
-  font-size: 20px;
-  color: #d7d7d7;
-}
-
-.date-row {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  color: #bbb;
-  font-size: 15px;
-  .date-row {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  color: #bbb;
-  font-size: 15px;
-  flex-wrap: wrap;
-}
-
-}
-
-.customer-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #222;
-  padding: 12px;
-  border-radius: 12px;
   margin-bottom: 16px;
 }
 
-.customer-box label {
-  white-space: nowrap;
-  color: #ddd;
+.header h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  color: #ffffff;
 }
 
-.customer-box input,
-.add-box input,
-.sms-box {
+.clock-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #b9c0cc;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #171b22;
+  border: 1px solid #262b36;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+  color: #f0f3f8;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #c8d0dc;
+}
+
+.field input,
+.add-service input {
   width: 100%;
-  background: #0f0f0f;
+  border: 1px solid #323844;
+  background: #11151b;
   color: #fff;
-  border: 1px solid #333;
-  outline: none;
-  padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 12px;
+  padding: 12px;
   font-size: 15px;
+  outline: none;
 }
 
-.sms-box {
-  margin-top: 14px;
-  min-height: 130px;
-  resize: vertical;
+.field input:focus,
+.add-service input:focus {
+  border-color: #5b8cff;
 }
 
-.table-head,
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .service-row {
   display: grid;
-  grid-template-columns: 70px 1fr 140px 110px;
+  grid-template-columns: 1fr auto auto;
   gap: 10px;
   align-items: center;
-}
-
-.table-head {
-  padding: 10px 12px;
-  color: #bbb;
-  font-size: 14px;
-  border-bottom: 1px solid #2f2f2f;
-  margin-bottom: 10px;
-}
-
-.service-row {
-  background: #222;
   padding: 12px;
+  border: 1px solid #2a2f3a;
   border-radius: 12px;
-  margin-bottom: 10px;
+  background: #12161d;
 }
 
-.service-row .row-index {
-  font-weight: bold;
-  color: #ffdf7e;
-}
-
-.service-name {
+.service-main {
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
 }
 
-.service-name input[type="checkbox"] {
-  transform: scale(1.2);
-  accent-color: #31c48d;
+.service-main input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #4ade80;
 }
 
-.service-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.service-main label {
+  cursor: pointer;
+  user-select: none;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .service-price {
-  color: #7ee2ff;
-  font-weight: bold;
-  text-align: left;
-}
-
-.actions-icons {
-  display: flex;
-  justify-content: flex-start;
-  gap: 8px;
+  color: #8fd3ff;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .icon-btn {
   border: none;
-  background: #2d2d2d;
-  color: #fff;
-  width: 36px;
-  height: 36px;
   border-radius: 10px;
+  padding: 10px 12px;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
-}
-
-.icon-btn:hover {
-  transform: translateY(-1px);
-  background: #3a3a3a;
+  font-size: 14px;
+  color: #fff;
 }
 
 .icon-btn.edit {
-  color: #ffd166;
+  background: #3b82f6;
 }
 
 .icon-btn.delete {
-  color: #ff6b6b;
+  background: #ef4444;
 }
 
-.add-box {
+.add-service {
   display: grid;
-  grid-template-columns: 1fr 180px 160px;
+  grid-template-columns: 1fr 140px auto;
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
-.actions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.actions button,
-.add-box button {
+.add-service button {
   border: none;
   border-radius: 12px;
-  padding: 11px 14px;
-  font-size: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
+  padding: 12px 16px;
+  background: #22c55e;
   color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-
-#smsBtn {
-  background: #8b5cf6;
+.summary-card {
+  position: sticky;
+  bottom: 10px;
 }
 
-#resetBtn {
-  background: #dc2626;
-}
-
-.add-box button {
-  background: #0ea5e9;
-}
-
-.total-box {
-  margin-top: 18px;
-  background: #0f172a;
-  border: 1px solid #1f2a44;
-  border-radius: 14px;
-  padding: 14px;
+.summary-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
   font-size: 18px;
 }
 
-#total-display {
-  color: #7cff9c;
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.btn-grid button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+
+.primary {
+  background: #2563eb;
+}
+
+.secondary {
+  background: #8b5cf6;
+}
+
+.danger {
+  background: #dc2626;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-item {
+  padding: 12px;
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  background: #12161d;
+}
+
+.history-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.history-name {
+  font-weight: 700;
+}
+
+.history-meta {
+  color: #a8b2c2;
+  font-size: 13px;
+}
+
+.history-services {
+  font-size: 14px;
+  color: #e3e8f2;
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.history-actions button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.history-actions .copy {
+  background: #14b8a6;
+}
+
+.history-actions .del {
+  background: #ef4444;
 }
 
 @media (max-width: 700px) {
-  .table-head,
+  .form-grid,
+  .add-service,
+  .btn-grid,
   .service-row {
-    grid-template-columns: 50px 1fr 110px 90px;
-  }
-
-  .add-box,
-  .actions {
     grid-template-columns: 1fr;
   }
-}
 
-/* PRINT */
-@media print {
-  body {
-    background: #fff;
-    color: #000;
-  }
-
-  .app {
-    max-width: 100%;
-    padding: 0;
-  }
-
-  .invoice-card {
-    box-shadow: none;
-    border: none;
-    border-radius: 0;
-    background: #fff;
-    color: #000;
-  }
-
-  .no-print,
-  .actions-icons,
-  .service-name input[type="checkbox"] {
-    display: none !important;
-  }
-
-  .table-head,
-  .service-row,
-  .total-box,
-  .header {
-    color: #000;
-  }
-
-  .service-row {
-    background: #fff;
-    border: 1px solid #ddd;
-    page-break-inside: avoid;
-  }
-
-  .service-price {
-    color: #000;
-  }
-
-  .total-box {
-    border: 1px solid #000;
-    background: #fff;
-  }
-
-  .table-head {
-    border-bottom: 1px solid #000;
+  .summary-card {
+    position: static;
   }
 }
