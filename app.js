@@ -251,3 +251,65 @@ setInterval(() => {
 currentDate.textContent = getTodayPersian();
 currentTime.textContent = getCurrentTimePersian();
 render();
+// ... (متغیرهای قبلی به علاوه این‌ها)
+const customerPhoneInput = document.getElementById("customerPhone");
+const historyList = document.getElementById("history-list");
+
+let state = {
+    current: {
+        customerName: "",
+        customerPhone: "",
+        services: defaultServices(),
+        date: getTodayPersian(),
+        time: getCurrentTimePersian()
+    },
+    history: JSON.parse(localStorage.getItem("invoice_history")) || []
+};
+
+// تابع برای افزودن به تاریخچه
+function saveToHistory() {
+    const invoice = {
+        id: crypto.randomUUID(),
+        name: state.current.customerName,
+        phone: state.current.customerPhone,
+        date: getTodayPersian(),
+        time: getCurrentTimePersian(),
+        total: getTotal(),
+        items: state.current.services.filter(s => s.selected)
+    };
+    
+    state.history.unshift(invoice); // اضافه به اول لیست
+    localStorage.setItem("invoice_history", JSON.stringify(state.history));
+    renderHistory();
+}
+
+function renderHistory() {
+    historyList.innerHTML = state.history.map(inv => `
+        <div class="history-item">
+            <span>${inv.date} - ${inv.name} (${inv.phone})</span>
+            <span>مبلغ: ${formatMoney(inv.total)}</span>
+            <button onclick="deleteInvoice('${inv.id}')">حذف</button>
+        </div>
+    `).join("");
+}
+
+function deleteInvoice(id) {
+    if(confirm("این فاکتور از سابقه حذف شود؟")) {
+        state.history = state.history.filter(h => h.id !== id);
+        localStorage.setItem("invoice_history", JSON.stringify(state.history));
+        renderHistory();
+    }
+}
+
+// اصلاح setInterval برای بروزرسانی تاریخ
+setInterval(() => {
+    const now = new Date();
+    const newDate = now.toLocaleDateString("fa-IR");
+    const newTime = now.toLocaleTimeString("fa-IR");
+    
+    // اگر تاریخ تغییر کرد (نیمه‌شب)، صفحه را رفرش یا بروز کن
+    if(currentDate.textContent !== newDate) {
+        currentDate.textContent = newDate;
+    }
+    currentTime.textContent = newTime;
+}, 1000);
