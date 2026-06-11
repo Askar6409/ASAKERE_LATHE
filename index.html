@@ -2,67 +2,62 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>تراشکاری عساکره</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body>
   <div class="app">
-    <div class="invoice-card" id="invoiceCard">
-      <div class="header">
-        <h1>تراشکاری عساکره</h1>
-        <h2>فاکتور</h2>
-        <div class="date-row">
-          <span>تاریخ:</span>
-          <span id="current-date"></span>
-          <span>ساعت:</span>
-          <span id="current-time"></span>
+    <header class="header">
+      <h1>تراشکاری عساکره</h1>
+      <div class="clock-row">
+        <span id="dateText"></span>
+        <span id="timeText"></span>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>اطلاعات مشتری</h2>
+      <div class="form-grid">
+        <div class="field">
+          <label for="customerName">نام مشتری</label>
+          <input type="text" id="customerName" placeholder="مثلاً علی رضایی" />
+        </div>
+        <div class="field">
+          <label for="customerPhone">شماره موبایل</label>
+          <input type="tel" id="customerPhone" placeholder="09xxxxxxxxx" />
         </div>
       </div>
+    </section>
 
-      <div class="customer-box no-print">
-        <label for="customerName">نام مشتری:</label>
-        <input type="text" id="customerName" placeholder="مثلاً عباس عساکره" />
-        
-        <label for="customerPhone">شماره موبایل:</label>
-        <input type="tel" id="customerPhone" placeholder="09xxxxxxxxx" />
-      </div>
+    <section class="card">
+      <h2>خدمات</h2>
+      <div id="services-list" class="services-list"></div>
 
-      <div class="table-head">
-        <span>ردیف</span>
-        <span>محصول / خدمت</span>
-        <span>قیمت</span>
-        <span>عملیات</span>
-      </div>
-
-      <div id="services-list"></div>
-
-      <div class="add-box no-print">
+      <div class="add-service">
         <input type="text" id="newServiceName" placeholder="نام خدمت جدید" />
         <input type="number" id="newServicePrice" placeholder="قیمت" />
         <button id="addServiceBtn">افزودن خدمت</button>
       </div>
+    </section>
 
-      <div class="total-box">
-        <span>مجموع:</span>
-        <strong id="total-display">0 تومان</strong>
+    <section class="card summary-card">
+      <div class="summary-row">
+        <span>مجموع</span>
+        <strong id="totalPrice">0 تومان</strong>
       </div>
 
-      <div class="actions no-print">
-        <button id="saveInvoiceBtn">ذخیره در سوابق</button>
-        <button id="smsBtn">متن SMS</button>
+      <div class="btn-grid">
+        <button id="saveBtn" class="primary">ذخیره در سوابق</button>
+        <button id="smsBtn" class="secondary">متن SMS</button>
         <button id="resetBtn" class="danger">پاک کردن انتخاب‌ها</button>
       </div>
+    </section>
 
-      <textarea id="smsText" class="sms-box no-print" readonly></textarea>
-    </div>
-
-    <!-- بخش سوابق فاکتورها -->
-    <div id="history-section" class="no-print">
-        <h3>سوابق فاکتورها</h3>
-        <div id="history-list"></div>
-    </div>
+    <section class="card">
+      <h2>سوابق فاکتور</h2>
+      <div id="history-list" class="history-list"></div>
+    </section>
   </div>
 
   <script src="app.js"></script>
