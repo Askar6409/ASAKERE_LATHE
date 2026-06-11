@@ -1,71 +1,127 @@
 <!DOCTYPE html>
+
 <html lang="fa" dir="rtl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تراشکاری عساکره</title>
-    <style>
-        body { background: #121212; color: #fff; font-family: sans-serif; padding: 20px; }
-        .container { max-width: 500px; margin: auto; }
-        .card { background: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .service-row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #333; }
-        input[type="checkbox"] { width: 25px; height: 25px; margin-left: 10px; }
-        button { padding: 10px; cursor: pointer; border-radius: 5px; border: none; margin-top: 5px; }
-        .btn-save { background: #28a745; color: white; }
-    </style>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>تراشکاری عساکره</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
 </head>
+
 <body>
 
-<div class="container">
-    <h2>تراشکاری عساکره</h2>
-    
-    <div class="card">
-        <input type="text" id="cName" placeholder="نام مشتری" style="width: 90%; padding: 8px;">
-        <input type="text" id="cPhone" placeholder="شماره موبایل" style="width: 90%; padding: 8px; margin-top: 5px;">
-    </div>
+  <div class="app">
 
-    <div class="card">
-        <h3>خدمات</h3>
-        <div id="services-container"></div>
-    </div>
+    <div class="invoice-card" id="invoiceCard">
 
-    <div class="card">
-        <h3 id="totalDisplay">مجموع: 0 تومان</h3>
-        <button class="btn-save" onclick="saveInvoice()">ذخیره در سوابق</button>
-    </div>
+      <div class="header">
+
+        <h1>تراشکاری عساکره </h1>
+
+        <h2>فاکتور </h2>
+
+        <div class="date-row">
+
+          <div class="date-row">
+
+  <span>تاریخ:</span>
+
+  <span id="current-date"></span>
+
+  <span>ساعت:</span>
+
+  <span id="current-time"></span>
+
 </div>
 
-<script>
-    const services = [
-        {name: "شستشو سرسیلندر", price: 250000},
-        {name: "آبندی", price: 300000},
-        {name: "کف‌تراشی", price: 450000}
-    ];
 
-    const container = document.getElementById('services-container');
-    
-    // رندر کردن چک‌باکس‌ها
-    services.forEach((s, index) => {
-        container.innerHTML += `
-            <div class="service-row">
-                <input type="checkbox" class="s-check" data-price="${s.price}" onchange="calc()">
-                <label>${s.name} - ${s.price.toLocaleString()} تومان</label>
-            </div>
-        `;
-    });
 
-    function calc() {
-        let total = 0;
-        document.querySelectorAll('.s-check:checked').forEach(el => {
-            total += parseInt(el.getAttribute('data-price'));
-        });
-        document.getElementById('totalDisplay').innerText = "مجموع: " + total.toLocaleString() + " تومان";
-    }
+        </div>
 
-    function saveInvoice() {
-        alert("ذخیره شد!"); // اینجا منطق ذخیره رو اضافه می‌کنیم
-    }
-</script>
+      </div>
+
+
+
+      <div class="customer-box no-print">
+
+        <label for="customerName">نام مشتری:</label>
+
+        <input type="text" id="customerName" placeholder="مثلاً عباس عساکره" />
+
+      </div>
+
+
+
+      <div class="table-head">
+
+        <span>ردیف</span>
+
+        <span>محصول / خدمت</span>
+
+        <span>قیمت</span>
+
+        <span>عملیات</span>
+
+      </div>
+
+
+
+      <div id="services-list"></div>
+
+
+
+      <div class="add-box no-print">
+
+        <input type="text" id="newServiceName" placeholder="نام خدمت جدید" />
+
+        <input type="number" id="newServicePrice" placeholder="قیمت" />
+
+        <button id="addServiceBtn">افزودن خدمت</button>
+
+      </div>
+
+
+
+      <div class="total-box">
+
+        <span>مجموع:</span>
+
+        <strong id="total-display">0 تومان</strong>
+
+      </div>
+
+
+
+      <div class="actions no-print">
+
+        
+
+        <button id="smsBtn">متن SMS</button>
+
+        <button id="resetBtn" class="danger">پاک کردن</button>
+
+      </div>
+
+
+
+      <textarea id="smsText" class="sms-box no-print" readonly></textarea>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="app.js"></script>
 
 </body>
+
 </html>
