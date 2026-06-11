@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>تراشکاری عساکره</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تراشکاری عساکره</title>
+    <style>
+        body { background: #121212; color: #fff; font-family: sans-serif; padding: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        .card { background: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .service-row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #333; }
+        input[type="checkbox"] { width: 25px; height: 25px; margin-left: 10px; }
+        button { padding: 10px; cursor: pointer; border-radius: 5px; border: none; margin-top: 5px; }
+        .btn-save { background: #28a745; color: white; }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <header class="header">
-      <h1>تراشکاری عساکره</h1>
-      <div class="clock-row">
-        <span id="dateText"></span>
-        <span id="timeText"></span>
-      </div>
-    </header>
 
-    <section class="card">
-      <h2>اطلاعات مشتری</h2>
-      <div class="form-grid">
-        <div class="field">
-          <label for="customerName">نام مشتری</label>
-          <input type="text" id="customerName" placeholder="مثلاً علی رضایی" />
-        </div>
-        <div class="field">
-          <label for="customerPhone">شماره موبایل</label>
-          <input type="tel" id="customerPhone" placeholder="09xxxxxxxxx" />
-        </div>
-      </div>
-    </section>
+<div class="container">
+    <h2>تراشکاری عساکره</h2>
+    
+    <div class="card">
+        <input type="text" id="cName" placeholder="نام مشتری" style="width: 90%; padding: 8px;">
+        <input type="text" id="cPhone" placeholder="شماره موبایل" style="width: 90%; padding: 8px; margin-top: 5px;">
+    </div>
 
-    <section class="card">
-      <h2>خدمات</h2>
-      <div id="services-list" class="services-list"></div>
+    <div class="card">
+        <h3>خدمات</h3>
+        <div id="services-container"></div>
+    </div>
 
-      <div class="add-service">
-        <input type="text" id="newServiceName" placeholder="نام خدمت جدید" />
-        <input type="number" id="newServicePrice" placeholder="قیمت" />
-        <button id="addServiceBtn">افزودن خدمت</button>
-      </div>
-    </section>
+    <div class="card">
+        <h3 id="totalDisplay">مجموع: 0 تومان</h3>
+        <button class="btn-save" onclick="saveInvoice()">ذخیره در سوابق</button>
+    </div>
+</div>
 
-    <section class="card summary-card">
-      <div class="summary-row">
-        <span>مجموع</span>
-        <strong id="totalPrice">0 تومان</strong>
-      </div>
+<script>
+    const services = [
+        {name: "شستشو سرسیلندر", price: 250000},
+        {name: "آبندی", price: 300000},
+        {name: "کف‌تراشی", price: 450000}
+    ];
 
-      <div class="btn-grid">
-        <button id="saveBtn" class="primary">ذخیره در سوابق</button>
-        <button id="smsBtn" class="secondary">متن SMS</button>
-        <button id="resetBtn" class="danger">پاک کردن انتخاب‌ها</button>
-      </div>
-    </section>
+    const container = document.getElementById('services-container');
+    
+    // رندر کردن چک‌باکس‌ها
+    services.forEach((s, index) => {
+        container.innerHTML += `
+            <div class="service-row">
+                <input type="checkbox" class="s-check" data-price="${s.price}" onchange="calc()">
+                <label>${s.name} - ${s.price.toLocaleString()} تومان</label>
+            </div>
+        `;
+    });
 
-    <section class="card">
-      <h2>سوابق فاکتور</h2>
-      <div id="history-list" class="history-list"></div>
-    </section>
-  </div>
+    function calc() {
+        let total = 0;
+        document.querySelectorAll('.s-check:checked').forEach(el => {
+            total += parseInt(el.getAttribute('data-price'));
+        });
+        document.getElementById('totalDisplay').innerText = "مجموع: " + total.toLocaleString() + " تومان";
+    }
 
-  <script src="app.js"></script>
+    function saveInvoice() {
+        alert("ذخیره شد!"); // اینجا منطق ذخیره رو اضافه می‌کنیم
+    }
+</script>
+
 </body>
 </html>
